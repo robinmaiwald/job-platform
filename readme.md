@@ -60,10 +60,12 @@ Job → User = many-to-one (creator)
 ### Overview
 
 
+```mermaid
 erDiagram
     USER }|--|{ COMPANY : belongs_to
     COMPANY ||--o{ JOB : owns
     USER ||--o{ JOB : creates
+```
 
 
 The `User ↔ Company` many-to-many relationship will be implemented using a `company_user` pivot table.
