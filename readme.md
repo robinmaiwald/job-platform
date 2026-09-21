@@ -22,11 +22,11 @@ The platform manages multiple job listings.
 Each job belongs to one company, while a company can have multiple jobs.
 
 * **Model:** `Company.php`
-* **Controller:** `JobController.php` *(as specified in the case study)*
+* **Controller:** `CompanyController.php` 
 * **Policy:** `CompanyPolicy.php`
 * **Repository:** `CompanyRepository.php` *(if needed)*
 
-### 3. User / Company Management
+### 3. User Management
 
 A company can have multiple users, and a user can belong to multiple companies.
 
@@ -78,7 +78,8 @@ The `User ↔ Company` many-to-many relationship will be implemented using a `co
 * **Company** = employer / organization
 * **Job** = job listing owned by a company
 
-A company owns and publishes a job listing, while `created_by` identifies the authenticated user who created the listing.
+A company owns and publishes a job listing, while `created_by` identifies the authenticated user who created the 
+listing.
 
 This distinction allows the application to determine both:
 
@@ -87,29 +88,41 @@ This distinction allows the application to determine both:
 
 ---
 
-## Initial Architecture
+##  Architecture Decisions
 
-The application will follow a separation-of-concerns approach:
+**Company Controller**
 
-```text
-Request
-   ↓
-Route
-   ↓
-Controller
-   ↓
-Policy / Authorization
-   ↓
-Validation
-   ↓
-Business / Data Access Logic
-   ↓
-Model
-   ↓
-Database
-```
+The case study references `JobController.php`in the Company section.
+For the implementation, `CompanyController.php`is used instead.
 
-Repositories will only be introduced where they provide a clear benefit. 
+Jobs and Companies are treated as independent API resources and therefore have separate resource controllers:
+
+Job 	-> JobController
+Company -> CompanyController
+User 	-> UserController
+
+This keeps the responsibilities of each controller clear and follows the RESTful resource-controller structure 
+requested by the case study.
+
+**Queue Configuration**
+
+Laravel's default database queue uses a database table named `jobs`.
+
+The application also requires a `jobs`table for job listings, which would create a conflict.
+
+Since asynchronous queue processing is not required for the inital application, the queue connection is configured 
+to use:
+
+QUEUE_CONNECTION=sync
+
+The default Laravel database queue migration is therefore not used.
+
+If asynchronous background jobs become necessary later, the queue implementation can be revisted wihtout changing
+ the Job Listing domain model.
+
+**Repositories**
+
+Repositories are considered optional and will only be introduced where they provide a clear benefit.
 
 ---
 
