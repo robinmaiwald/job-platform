@@ -4,15 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\Job;
 use Illuminate\Http\Request;
+use App\Repositories\JobRepository;
 
 class JobController extends Controller
 {
+    public function __construct(private JobRepository $jobs)
+    {
+	//
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $this->authorize('viewAny', Job::class);
+
+	return response()->json($this->jobs->all());
     }
 
     /**
@@ -36,7 +44,9 @@ class JobController extends Controller
      */
     public function show(Job $job)
     {
-        //
+        $this->authorize('view', $job);
+
+	return response()->json($this->jobs->find($job));
     }
 
     /**
