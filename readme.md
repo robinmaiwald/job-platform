@@ -22,7 +22,7 @@ The platform manages multiple job listings.
 Each job belongs to one company, while a company can have multiple jobs.
 
 * **Model:** `Company.php`
-* **Controller:** `CompanyController.php` 
+* **Controller:** `CompanyController.php` *(case study specifies `JobController.php`)* 
 * **Policy:** `CompanyPolicy.php`
 * **Repository:** `CompanyRepository.php` *(if needed)*
 
@@ -76,15 +76,8 @@ The `User ↔ Company` many-to-many relationship will be implemented using a `co
 
 * **User** = authenticated account using the platform
 * **Company** = employer / organization
-* **Job** = job listing owned by a company
+* **Job** = job listing belonging to a company and created by a user 
 
-A company owns and publishes a job listing, while `created_by` identifies the authenticated user who created the 
-listing.
-
-This distinction allows the application to determine both:
-
-* which company owns a job
-* which user created the job
 
 ---
 
@@ -139,3 +132,39 @@ The initial implementation will focus on:
 7. Automated tests
 
 Optional frontend functionality will be considered after the required backend functionality is complete.
+
+
+---
+## Database Design Decisions
+
+**Job → User / Company**
+
+A Job belongs to a Company through `company_id` and is created by an authenticated User identified by `user_id`.
+The Job table therefore uses Laravel's conventional `user_id` foreign key naming.
+
+**Optional Job / Company Fields**
+
+Fields that are not explicitly required by the case study are kept optional.
+
+For example: 
+
+**Company**
+- `name` → required
+- `description` → optional
+- `website` → optional
+
+**Job**
+- `title` → required
+- `description` → optional
+- `location` → optional
+
+**Delete Rules**
+
+A Company cannot be deleted while Jobs still belong to it.
+
+A User cannot be deleted while Jobs still reference that User as their creator.
+
+The User ↔ Company membership records use cascading deletes because they represent the relationship itself and 
+should not remain after the related User or Company is deleted. 
+
+
