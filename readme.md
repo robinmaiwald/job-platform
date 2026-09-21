@@ -168,3 +168,39 @@ The User ↔ Company membership records use cascading deletes because they repre
 should not remain after the related User or Company is deleted. 
 
 
+## Current API Implementation
+**Authentication**
+
+API authentication uses Laravel Sanctum.
+
+Login endpoint:
+
+POST /api/login
+
+The seeded development user is:
+
+email: test@example.com
+password: password
+
+Protected requests use:
+
+Authorization: Bearer <token>
+** Job API **
+
+The Job resource currently supports:
+
+GET       /api/jobs
+GET       /api/jobs/{job}
+POST      /api/jobs
+PUT       /api/jobs/{job}
+DELETE    /api/jobs/{job}
+
+Everyone can view Jobs. Creating a Job requires authentication. Only the creator of a Job can update or delete it.
+
+Job operations follow the controller → policy → validation → repository flow required by the case study.
+
+**Database Seeding**
+
+The database can be rebuilt with the provided migrations and seed data:
+
+php artisan migrate:fresh --seed

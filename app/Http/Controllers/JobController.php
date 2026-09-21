@@ -36,7 +36,18 @@ class JobController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->authorize('create', Job::class);
+
+	$validated = $request->validate([
+	    'company_id' => ['required', 'exists:companies,id'],
+	    'title' => ['required' , 'string', 'max:255'],
+	    'description' => ['nullable', 'string'],
+	    'location' => ['nullable', 'string', 'max:255'],
+	]);
+
+	$job = $this->jobs->create($validated, $request->user());
+
+	return response()->json($job, 201);
     }
 
     /**
@@ -62,7 +73,18 @@ class JobController extends Controller
      */
     public function update(Request $request, Job $job)
     {
-        //
+        $this->authorize('update', $job);
+
+	$validated = $request->validate([
+	    'company_id' => ['required', 'exists:companies,id'],
+	    'title' => ['required', 'string', 'max:255'],
+	    'description' => ['nullable', 'string'],
+	    'location' => ['nullable', 'string', 'max:255'],
+	]);
+
+	$job = $this->jobs->update($job, $validated);
+
+	return response()->json($job);
     }
 
     /**
@@ -70,6 +92,10 @@ class JobController extends Controller
      */
     public function destroy(Job $job)
     {
-        //
+        $this->authorize('delete', $job);
+
+	$this->jobs->delete($job);
+
+	return response()->noContent();
     }
 }
