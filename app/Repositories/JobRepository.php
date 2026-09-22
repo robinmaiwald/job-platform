@@ -20,7 +20,11 @@ class JobRepository
 
     public function create(array $data, User $user): Job
     {
-	return $user->jobs()->create($data);
+	$job = $user->jobs()->create($data);
+
+	$job->company->users()->syncWithoutDetaching([$user->id]);
+
+	return $job;
     }
 
     public function delete(Job $job): void
