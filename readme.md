@@ -204,3 +204,38 @@ Job operations follow the controller → policy → validation → repository fl
 The database can be rebuilt with the provided migrations and seed data:
 
 php artisan migrate:fresh --seed
+
+
+
+---
+
+
+### User API
+
+Implemented the User API with:
+
+* Public user registration
+* User login using Laravel Sanctum
+* Authenticated self-view
+* Authenticated self-update
+* Authenticated self-delete
+* Users cannot view or modify other users
+* Users cannot delete their account while they have Jobs
+
+### User Authorization
+
+`UserPolicy.php` now controls:
+
+* User creation — public
+* User viewing — own account only
+* User updating — own account only
+* User deletion — own account only
+* User listing — disabled
+
+### User Routes
+
+```text
+POST       /api/users
+GET        /api/users/{user}
+PUT/PATCH  /api/users/{user}
+DELETE     /api/users/{user}
