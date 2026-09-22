@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\JobController;
@@ -28,6 +29,13 @@ Route::apiResource('companies', CompanyController::class)
     ->except(['index', 'show'])
     ->middleware('auth:sanctum');
 
+// User API
+
+Route::post('/users', [UserController::class, 'store']);
+
+Route::apiResource('users', UserController::class)
+    ->only(['show', 'update', 'destroy'])
+    ->middleware('auth:sanctum');
 
 Route::post('/login', [AuthController::class, 'login']);
 
