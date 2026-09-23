@@ -239,3 +239,61 @@ POST       /api/users
 GET        /api/users/{user}
 PUT/PATCH  /api/users/{user}
 DELETE     /api/users/{user}
+
+
+## Frontend
+
+The frontend is built with Vue 3, Inertia.js, TypeScript, Tailwind CSS, and Vite.
+
+### Main pages
+
+* Welcome / Entry
+* Login / Registration
+* Guest browsing
+* Job search and Job Details
+* Company search, Company Details, and Company Jobs
+* User Profile
+* Network (My Jobs / My Companies)
+* Settings
+* Create / Edit Jobs
+* Create / Edit Companies
+
+### Navigation
+
+Authenticated pages use the reusable `AuthNav.vue` component.
+
+The main navigation is:
+
+```text
+Search | Create | Network | Profile | Settings
+```
+
+Search and Create contain dropdown menus for their respective sections.
+
+### Authentication
+
+Laravel Sanctum is used for API authentication.
+
+The frontend stores the authentication token in browser `localStorage` and sends it as a Bearer token for protected API requests.
+
+### Frontend organization
+
+Public pages are located in:
+
+```text
+resources/js/pages/public/
+```
+
+Authenticated pages are located in:
+
+```text
+resources/js/pages/auth/
+```
+
+Reusable components are located in:
+
+```text
+resources/js/components/
+```
+
+Frontend assets are managed and bundled with Vite.

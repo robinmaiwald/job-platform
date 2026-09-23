@@ -25,6 +25,6 @@ import { Head, Link } from '@inertiajs/vue3';
                 Jobs Around the Globe
             </Link>
 
-        </section>
+        </section>  
     </main>
 </template>

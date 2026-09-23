@@ -48,5 +48,12 @@ import { Head, Link } from '@inertiajs/vue3';
             </div>
 
         </div>
+
+        <Link
+            href="/admin/login"
+            class="fixed bottom-6 right-6 text-sm text-gray-500 transition hover:text-white"
+        >
+            Admin
+        </Link>
     </main>
 </template>
