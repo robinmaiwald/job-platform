@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\AuthController;
@@ -39,3 +40,63 @@ Route::apiResource('users', UserController::class)
 
 Route::post('/login', [AuthController::class, 'login']);
 
+// Admin API
+
+Route::post('/admin/login', [AdminController::class, 'login']);
+
+// Admin -> Users
+
+Route::get('/admin/users', [AdminController::class, 'users'])
+    ->middleware('auth:sanctum');
+
+Route::get('/admin/users/{user}', [AdminController::class, 'user'])
+    ->middleware('auth:sanctum');
+
+Route::post('/admin/users', [AdminController::class, 'createUser'])
+    ->middleware('auth:sanctum');
+
+Route::put('/admin/users/{user}', [AdminController::class, 'updateUser'])
+    ->middleware('auth:sanctum');
+
+Route::delete('/admin/users/{user}', [AdminController::class, 'deleteUser'])
+    ->middleware('auth:sanctum');
+
+// Admin -> Jobs
+
+Route::get('/admin/jobs', [AdminController::class, 'jobs'])
+    ->middleware('auth:sanctum');
+
+Route::get('/admin/jobs/{job}', [AdminController::class, 'job'])
+    ->middleware('auth:sanctum');
+
+Route::post('/admin/jobs', [AdminController::class, 'createJob'])
+    ->middleware('auth:sanctum');
+
+Route::put('/admin/jobs/{job}', [AdminController::class, 'updateJob'])
+    ->middleware('auth:sanctum');
+
+Route::delete('/admin/jobs/{job}', [AdminController::class, 'deleteJob'])
+    ->middleware('auth:sanctum');
+
+// Admin -> Companies
+
+Route::get('/admin/companies', [AdminController::class, 'companies'])
+    ->middleware('auth:sanctum');
+
+Route::get('/admin/companies/{company}', [AdminController::class, 'company'])
+    ->middleware('auth:sanctum');
+
+Route::post('/admin/companies', [AdminController::class, 'createCompany'])
+    ->middleware('auth:sanctum');
+
+Route::put('/admin/companies/{company}', [AdminController::class, 'updateCompany'])
+    ->middleware('auth:sanctum');
+
+Route::delete('/admin/companies/{company}', [AdminController::class, 'deleteCompany'])
+    ->middleware('auth:sanctum');
+
+// Admin profile — keep this last
+
+Route::apiResource('admin', AdminController::class)
+    ->only(['show', 'update'])
+    ->middleware('auth:sanctum');

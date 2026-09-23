@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['company_id', 'title', 'description', 'location'])]
+#[Fillable(['company_id', 'user_id', 'title', 'description', 'location'])]
 class Job extends Model
 {
     /** @use HasFactory<JobFactory> */

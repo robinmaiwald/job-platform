@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Collection;
 
 class CompanyRepository
 {
-    // Repository Methods
-
     public function all(): Collection
     {
         return Company::with('users:id')->get();
@@ -17,30 +15,31 @@ class CompanyRepository
 
     public function find(Company $company): Company
     {
-	    return $company;
+        return $company;
     }
 
     public function create(array $data, User $user): Company
     {
-	$company = Company::create($data);
+        $company = Company::create($data);
 
-	$company->owner()->associate($user);
-	$company->save();
+        $company->owner()->associate($user);
+        $company->save();
 
-	$company->users()->syncWithoutDetaching([$user->id]);
+        $company->users()->syncWithoutDetaching([$user->id]);
 
-	return $company;
+        return $company;
     }
 
     public function update(Company $company, array $data): Company
     {
-	    $company->update($data);
+        $company->update($data);
 
-	    return $company;
+        return $company;
     }
 
     public function delete(Company $company): void
     {
-	    $company->delete();
+        $company->jobs()->delete();
+        $company->delete();
     }
 }
