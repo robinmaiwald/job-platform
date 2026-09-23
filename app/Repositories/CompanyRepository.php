@@ -12,12 +12,12 @@ class CompanyRepository
 
     public function all(): Collection
     {
-	return Company::all();
+        return Company::with('users:id')->get();
     }
 
     public function find(Company $company): Company
     {
-	return $company;
+	    return $company;
     }
 
     public function create(array $data, User $user): Company
@@ -34,13 +34,13 @@ class CompanyRepository
 
     public function update(Company $company, array $data): Company
     {
-	$company->update($data);
+	    $company->update($data);
 
-	return $company;
+	    return $company;
     }
 
     public function delete(Company $company): void
     {
-	$company->delete();
+	    $company->delete();
     }
 }

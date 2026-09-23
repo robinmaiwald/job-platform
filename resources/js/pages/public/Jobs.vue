@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { isLoggedIn } from '../../lib/auth';
+import AuthNav from '../../components/AuthNav.vue';
 
 const title = ref('');
 const company = ref('');
@@ -10,6 +12,12 @@ const jobs = ref<any[]>([]);
 const companies = ref<any[]>([]);
 const loading = ref(false);
 const searched = ref(false);
+
+const loggedIn = ref(false);
+
+onMounted(() => {
+    loggedIn.value = isLoggedIn();
+});
 
 async function loadJobs() {
     loading.value = true;
@@ -86,7 +94,12 @@ async function listAll() {
     <main class="min-h-screen bg-black text-white">
 
         <!-- Navigation -->
-        <nav class="flex items-center justify-between border-b border-white/10 px-6 py-6">
+        <AuthNav v-if="loggedIn" />
+
+        <nav
+            v-else
+            class="flex items-center justify-between border-b border-white/10 px-6 py-6"
+        >
             <Link
                 href="/"
                 class="text-xl font-bold"
@@ -94,13 +107,13 @@ async function listAll() {
                 Jobs Around the Globe
             </Link>
 
-        <Link
-            href="/guest"
-            class="rounded-lg bg-black px-4 py-2 transition hover:bg-gray-900"
-            style="color: white; border: 1px solid rgba(255, 255, 255, 0.3);"
-        >
-            Back
-        </Link>
+            <Link
+                href="/guest"
+                class="rounded-lg bg-black px-4 py-2 transition hover:bg-gray-900"
+                style="color: white; border: 1px solid rgba(255, 255, 255, 0.3);"
+            >
+                Back
+            </Link>
         </nav>
 
         <!-- Search -->

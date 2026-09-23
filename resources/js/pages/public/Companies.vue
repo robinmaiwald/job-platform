@@ -1,11 +1,19 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { isLoggedIn } from '../../lib/auth';
+import AuthNav from '../../components/AuthNav.vue';
 
 const company = ref('');
 const companies = ref<any[]>([]);
 const loading = ref(false);
 const searched = ref(false);
+
+const loggedIn = ref(false);
+
+onMounted(() => {
+    loggedIn.value = isLoggedIn();
+});
 
 async function loadCompanies() {
     loading.value = true;
@@ -54,7 +62,12 @@ async function listAll() {
     <main class="min-h-screen bg-black text-white">
 
         <!-- Navigation -->
-        <nav class="flex items-center justify-between border-b border-white/10 px-6 py-6">
+        <AuthNav v-if="loggedIn" />
+
+        <nav
+            v-else
+            class="flex items-center justify-between border-b border-white/10 px-6 py-6"
+        >
             <Link
                 href="/"
                 class="text-xl font-bold"

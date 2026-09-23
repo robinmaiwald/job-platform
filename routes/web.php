@@ -2,28 +2,41 @@
 
 use Illuminate\Support\Facades\Route;
 
+// Main
+
 Route::inertia('/', 'Welcome')->name('home');
 
 Route::inertia('/entry', 'Entry')->name('entry');
 
 Route::inertia('/login', 'Login')->name('login');
 
-Route::inertia('/dashboard', 'Dashboard')->name('dashboard');
+Route::inertia('/register', 'Register')->name('register');
 
 Route::inertia('/guest', 'Guest')->name('guest');
 
-//Guest Path
+// Public
 
-Route::inertia('/jobs', 'Jobs')->name('jobs');
+Route::inertia('/jobs', 'public/Jobs')->name('jobs');
 
-Route::inertia('/jobs/{job}', 'JobDetails')->name('jobs.show');
+Route::inertia('/jobs/{job}', 'public/JobDetails')->name('jobs.show');
+Route::inertia('/jobs/{job}/edit', 'auth/EditJob')->name('jobs.edit');
 
-Route::inertia('/companies', 'Companies')->name('companies');
+Route::inertia('/companies', 'public/Companies')->name('companies');
+Route::inertia('/companies/{company}/edit', 'auth/EditCompany')->name('companies.edit');
 
-Route::inertia('/companies/{company}/jobs', 'CompanyJobs')->name('companies.jobs');
+Route::inertia('/companies/{company}/jobs', 'public/CompanyJobs')->name('companies.jobs');
 
-Route::inertia('/companies/{company}', 'CompanyDetails')->name('companies.show');
+Route::inertia('/companies/{company}', 'public/CompanyDetails')->name('companies.show');
 
-//Login Path
+// Authenticated
 
+Route::inertia('/profile', 'auth/Profile')->name('profile');
+
+Route::inertia('/network', 'auth/Network')->name('network');
+
+Route::inertia('/settings', 'auth/Settings')->name('settings');
+
+Route::inertia('/create/job', 'auth/CreateJob')->name('create.job');
+
+Route::inertia('/create/company', 'auth/CreateCompany')->name('create.company');
 

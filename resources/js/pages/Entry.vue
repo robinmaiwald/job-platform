@@ -38,7 +38,7 @@ import { Head, Link } from '@inertiajs/vue3';
 
                 <!-- Sign Up -->
                 <Link
-                    href="#"
+                    href="/register"
                     class="block rounded-lg bg-white px-6 py-3 font-semibold transition hover:bg-gray-200"
                     style="color: black;"
                 >

@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
-import { ref, onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
+import { isLoggedIn } from '../../lib/auth';
 
 const job = ref<any>(null);
 const loading = ref(true);
-
-const jobId = window.location.pathname.split('/').pop();
+const loggedIn = ref(false);
+const jobId = ref('');
 
 async function loadJob() {
     try {
-        const response = await fetch(`/api/jobs/${jobId}`);
+        const response = await fetch(`/api/jobs/${jobId.value}`);
 
         if (!response.ok) {
             throw new Error('Failed to load job.');
@@ -26,6 +27,9 @@ async function loadJob() {
 }
 
 onMounted(() => {
+    loggedIn.value = isLoggedIn();
+    jobId.value = window.location.pathname.split('/').pop() ?? '';
+
     loadJob();
 });
 </script>

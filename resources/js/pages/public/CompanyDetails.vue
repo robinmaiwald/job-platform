@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
 import { onMounted, ref } from 'vue';
+import { isLoggedIn } from '../../lib/auth';
 
 const company = ref<any>(null);
 const loading = ref(true);
 const error = ref('');
+const loggedIn = ref(false);
 
 async function loadCompany() {
     try {
@@ -28,6 +30,7 @@ async function loadCompany() {
 }
 
 onMounted(() => {
+    loggedIn.value = isLoggedIn();
     loadCompany();
 });
 </script>
@@ -45,7 +48,7 @@ onMounted(() => {
             </Link>
 
             <Link
-                href="/companies"
+                :href="loggedIn ? '/profile' : '/companies'"
                 class="rounded-lg bg-black px-4 py-2 font-semibold transition hover:bg-gray-900"
                 style="color: white; border: 1px solid rgba(255, 255, 255, 0.3);"
             >

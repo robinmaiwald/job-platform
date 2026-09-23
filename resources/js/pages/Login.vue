@@ -34,7 +34,7 @@ async function login() {
 
         localStorage.setItem('auth_token', data.token);
 
-        window.location.href = '/dashboard';
+        window.location.href = '/profile';
     } catch (err) {
         error.value =
             err instanceof Error
@@ -119,7 +119,8 @@ async function login() {
             <div class="mt-6 text-center">
                 <Link
                     href="/entry"
-                    class="text-sm text-gray-400 transition hover:text-white"
+                    class="mt-6 inline-block rounded-lg bg-black px-6 py-3 font-semibold"
+                    style="color: white; border: 1px solid rgba(255, 255, 255, 0.3);"
                 >
                     Back
                 </Link>
