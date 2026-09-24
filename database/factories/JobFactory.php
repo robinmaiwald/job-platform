@@ -7,16 +7,10 @@ use App\Models\User;
 use App\Models\Job;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends Factory<Job>
- */
+
 class JobFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+
     public function definition(): array
     {
         return [
@@ -29,8 +23,10 @@ class JobFactory extends Factory
 
     public function configure(): static
     {
-	return $this->afterMaking(function (Job $job) {
-	    $job->user_id = User::factory()->create()->id;
-	});
+        return $this->afterMaking(function (Job $job) {
+            if ($job->user_id === null) {
+                $job->user_id = User::factory()->create()->id;
+            }
+        });
     }
 }

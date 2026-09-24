@@ -65,7 +65,7 @@ class CompanyController extends Controller
 
         $company = $this->companies->update($company, $validated);
 
-        return (new CompanyResource($company))->response()->setStatusCOde(201);
+        return new CompanyResource($company);
     }
 
 
