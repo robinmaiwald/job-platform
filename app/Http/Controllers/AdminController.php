@@ -10,6 +10,10 @@ use App\Http\Requests\Admin\UpdateAdminRequest;
 use App\Http\Requests\Admin\UpdateCompanyRequest;
 use App\Http\Requests\Admin\UpdateJobRequest;
 use App\Http\Requests\Admin\UpdateUserRequest;
+use App\Http\Resources\Admin\AdminResource;
+use App\Http\Resources\Admin\UserResource as AdminUserResource;
+use App\Http\Resources\Admin\JobResource as AdminJobResource;
+use App\Http\Resources\Admin\CompanyResource as AdminCompanyResource;
 use App\Models\Admin;
 use App\Models\Company;
 use App\Models\Job;
@@ -25,37 +29,13 @@ class AdminController extends Controller
         //
     }
 
-    public function login(AdminLoginRequest $request)
-    {
-        $validated = $request->validated();
-
-        $admin = $this->admins->get();
-
-        if (
-            !$admin ||
-            $validated['name'] !== $admin->name ||
-            !Hash::check($validated['password'], $admin->password)
-        ) {
-            return response()->json([
-                'message' => 'Invalid credentials.',
-            ], 401);
-        }
-
-        $token = $admin->createToken('admin')->plainTextToken;
-
-        return response()->json([
-            'admin' => $admin,
-            'token' => $token,
-        ]);
-    }
-
     // ADMIN PROFILE
 
     public function show(Admin $admin)
     {
         $this->authorize('view', $admin);
 
-        return response()->json($admin);
+        return new AdminResource($admin);
     }
 
     public function update(UpdateAdminRequest $request, Admin $admin)
@@ -66,7 +46,7 @@ class AdminController extends Controller
 
         $admin = $this->admins->update($admin, $validated);
 
-        return response()->json($admin);
+        return new AdminResource($admin);
     }
 
     // USERS
@@ -75,18 +55,14 @@ class AdminController extends Controller
     {
         $this->authorize('manageUsers', Admin::class);
 
-        return response()->json(
-            $this->admins->users()
-        );
+        return AdminUserResource::collection($this->admins->users());
     }
 
     public function user(User $user)
     {
         $this->authorize('manageUsers', Admin::class);
 
-        return response()->json(
-            $this->admins->user($user)
-        );
+        return new AdminUserResource($this->admins->user($user));
     }
 
     public function createUser(CreateUserRequest $request)
@@ -97,7 +73,7 @@ class AdminController extends Controller
 
         $user = $this->admins->createUser($validated);
 
-        return response()->json($user, 201);
+        return (new AdminUserResource($user))->response()->setStatusCode(201);
     }
 
     public function updateUser(UpdateUserRequest $request, User $user)
@@ -108,7 +84,7 @@ class AdminController extends Controller
 
         $user = $this->admins->updateUser($user, $validated);
 
-        return response()->json($user);
+        return new AdminUserResource($user);
     }
 
     public function deleteUser(User $user)
@@ -126,18 +102,14 @@ class AdminController extends Controller
     {
         $this->authorize('manageJobs', Admin::class);
 
-        return response()->json(
-            $this->admins->jobs()
-        );
+        return AdminJobResource::collection($this->admins->jobs());
     }
 
     public function job(Job $job)
     {
         $this->authorize('manageJobs', Admin::class);
 
-        return response()->json(
-            $this->admins->job($job)
-        );
+        return new AdminJobResource($this->admins->job($job));
     }
 
     public function createJob(CreateJobRequest $request)
@@ -148,7 +120,7 @@ class AdminController extends Controller
 
         $job = $this->admins->createJob($validated);
 
-        return response()->json($job, 201);
+        return (new AdminJobResource($job))->response()->setStatusCode(201);
     }
 
     public function updateJob(UpdateJobRequest $request, Job $job)
@@ -159,7 +131,7 @@ class AdminController extends Controller
 
         $job = $this->admins->updateJob($job, $validated);
 
-        return response()->json($job);
+        return new AdminJobResource($job);
     }
 
     public function deleteJob(Job $job)
@@ -177,29 +149,25 @@ class AdminController extends Controller
     {
         $this->authorize('manageCompanies', Admin::class);
 
-        return response()->json(
-            $this->admins->companies()
-        );
+        return AdminCompanyResource::collection($this->admins->companies());
     }
 
     public function company(Company $company)
     {
         $this->authorize('manageCompanies', Admin::class);
 
-        return response()->json(
-            $this->admins->company($company)
-        );
+        return new AdminCompanyResource($this->admins->company($company));
     }
 
     public function createCompany(CreateCompanyRequest $request)
     {
         $this->authorize('manageCompanies', Admin::class);
-    
+
         $validated = $request->validated();
-    
+
         $company = $this->admins->createCompany($validated);
-    
-        return response()->json($company, 201);
+
+        return (new AdminCompanyResource($company))->response()->setStatusCode(201);
     }
 
     public function updateCompany(UpdateCompanyRequest $request, Company $company)
@@ -218,7 +186,7 @@ class AdminController extends Controller
             $ownerId
         );
 
-        return response()->json($company);
+        return new AdminCompanyResource($company);
     }
 
     public function deleteCompany(Company $company)

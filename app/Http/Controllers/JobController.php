@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Jobs\StoreJobRequest;
 use App\Http\Requests\Jobs\UpdateJobRequest;
+use App\Http\Resources\JobResource;
 use App\Models\Job;
 use App\Repositories\JobRepository;
 
@@ -19,7 +20,9 @@ class JobController extends Controller
     {
         $this->authorize('viewAny', Job::class);
 
-	    return response()->json($this->jobs->all());
+	    return JobResource::collection(
+            $this->jobs->all()
+        );
     }
 
     public function create()
@@ -35,14 +38,14 @@ class JobController extends Controller
 
         $job = $this->jobs->create($validated, $request->user());
 
-        return response()->json($job, 201);
+        return (new JobResource($job))->response()->setStatusCode(201); 
     }
 
     public function show(Job $job)
     {
         $this->authorize('view', $job);
 
-	    return response()->json($this->jobs->find($job));
+	    return new JobResource($this->jobs->find($job));
     }
 
     public function edit(Job $job)
@@ -59,7 +62,7 @@ class JobController extends Controller
 
         $job = $this->jobs->update($job, $validated);
 
-        return response()->json($job);
+        return new JobResource($job);
     }
 
     public function destroy(Job $job)

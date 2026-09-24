@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Admin\AdminLoginRequest;
 use App\Http\Requests\Auth\UserLoginRequest;
+use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -16,14 +17,40 @@ class AuthController extends Controller
         $user = User::where('email', $validated['email'])->first();
 
         if (! $user || ! Hash::check($validated['password'], $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided data are incorrect.'],
-            ]);
+            return response()->json([
+                'message' => 'Invalid credentials.',
+            ], 401);
         }
 
-        $token = $user->createToken('api-token')->plainTextToken;
+        $token = $user->createToken(
+            'api-token',
+            ['user']
+        )->plainTextToken;
 
         return response()->json([
+            'token' => $token,
+        ]);
+    }
+
+    public function adminLogin(AdminLoginRequest $request)
+    {
+        $validated = $request->validated();
+
+        $admin = Admin::where('name', $validated['name'])->first();
+
+        if (! $admin || ! Hash::check($validated['password'], $admin->password)) {
+            return response()->json([
+                'message' => 'Invalid credentials.',
+            ], 401);
+        }
+
+        $token = $admin->createToken(
+            'admin',
+            ['admin']
+        )->plainTextToken;
+
+        return response()->json([
+            'admin' => $admin,
             'token' => $token,
         ]);
     }

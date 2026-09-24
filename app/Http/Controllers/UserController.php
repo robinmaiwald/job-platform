@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Users\StoreUserRequest;
 use App\Http\Requests\Users\UpdateUserRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Repositories\UserRepository;
 
@@ -28,16 +29,14 @@ class UserController extends Controller
 
         $user = $this->users->create($validated);
 
-        return response()->json($user, 201);
+        return (new UserResource($user))->response()->setStatusCode(201);
     }
 
     public function show(User $user)
     {
         $this->authorize('view', $user);
 
-        return response()->json(
-            $this->users->find($user)
-        );
+        return new UserResource($this->users->find($user));
     }
 
     public function update(UpdateUserRequest $request, User $user)
@@ -48,7 +47,7 @@ class UserController extends Controller
 
         $user = $this->users->update($user, $validated);
 
-        return response()->json($user);
+        return new UserResource($user);
     }
 
     public function destroy(User $user)

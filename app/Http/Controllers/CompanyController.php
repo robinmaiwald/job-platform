@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Companies\StoreCompanyRequest;
 use App\Http\Requests\Companies\UpdateCompanyRequest;
+use App\Http\Resources\CompanyResource;
 use App\Repositories\CompanyRepository;
 use App\Models\Company;
 
@@ -20,7 +21,7 @@ class CompanyController extends Controller
     {
         $this->authorize('viewAny', Company::class);
 
-	    return response()->json($this->companies->all());
+	    return Companyresource::collection($this->companies->all());
     }
 
 
@@ -38,7 +39,7 @@ class CompanyController extends Controller
 
 	    $company = $this->companies->create($validated, $request->user());
 
-	    return response()->json($company, 201);
+	    return (new CompanyResource($company))->response()->setStatusCode(201);
     }
 
 
@@ -46,7 +47,7 @@ class CompanyController extends Controller
     {
         $this->authorize('view', $company);
 
-	    return response()->json($this->companies->find($company));
+	    return new CompanyResource($this->companies->find($company));
     }
 
 
@@ -64,7 +65,7 @@ class CompanyController extends Controller
 
         $company = $this->companies->update($company, $validated);
 
-        return response()->json($company);
+        return (new CompanyResource($company))->response()->setStatusCOde(201);
     }
 
 
