@@ -36,12 +36,12 @@ class User extends Authenticatable
 
     public function companies()
     {
-	return $this->belongsToMany(Company::class);
+        return $this->belongsToMany(Company::class);
     }
 
     public function jobs()
     {
-	return $this->hasMany(Job::class);
+        return $this->hasMany(Job::class);
     }
 
     protected function casts(): array

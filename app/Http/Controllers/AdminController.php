@@ -2,12 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Admin\AdminLoginRequest;
+use App\Http\Requests\Admin\CreateCompanyRequest;
+use App\Http\Requests\Admin\CreateJobRequest;
+use App\Http\Requests\Admin\CreateUserRequest;
+use App\Http\Requests\Admin\UpdateAdminRequest;
+use App\Http\Requests\Admin\UpdateCompanyRequest;
+use App\Http\Requests\Admin\UpdateJobRequest;
+use App\Http\Requests\Admin\UpdateUserRequest;
 use App\Models\Admin;
 use App\Models\Company;
 use App\Models\Job;
 use App\Models\User;
 use App\Repositories\AdminRepository;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
@@ -18,12 +25,9 @@ class AdminController extends Controller
         //
     }
 
-    public function login(Request $request)
+    public function login(AdminLoginRequest $request)
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string'],
-            'password' => ['required', 'string'],
-        ]);
+        $validated = $request->validated();
 
         $admin = $this->admins->get();
 
@@ -54,14 +58,11 @@ class AdminController extends Controller
         return response()->json($admin);
     }
 
-    public function update(Request $request, Admin $admin)
+    public function update(UpdateAdminRequest $request, Admin $admin)
     {
         $this->authorize('update', $admin);
 
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'password' => ['sometimes', 'string', 'min:8', 'confirmed'],
-        ]);
+        $validated = $request->validated();
 
         $admin = $this->admins->update($admin, $validated);
 
@@ -88,36 +89,22 @@ class AdminController extends Controller
         );
     }
 
-    public function createUser(Request $request)
+    public function createUser(CreateUserRequest $request)
     {
         $this->authorize('manageUsers', Admin::class);
 
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'string', 'min:8'],
-        ]);
+        $validated = $request->validated();
 
         $user = $this->admins->createUser($validated);
 
         return response()->json($user, 201);
     }
 
-    public function updateUser(Request $request, User $user)
+    public function updateUser(UpdateUserRequest $request, User $user)
     {
         $this->authorize('manageUsers', Admin::class);
 
-        $validated = $request->validate([
-            'name' => ['sometimes', 'required', 'string', 'max:255'],
-            'email' => [
-                'sometimes',
-                'required',
-                'email',
-                'max:255',
-                'unique:users,email,' . $user->id,
-            ],
-            'password' => ['sometimes', 'string', 'min:8'],
-        ]);
+        $validated = $request->validated();
 
         $user = $this->admins->updateUser($user, $validated);
 
@@ -153,34 +140,22 @@ class AdminController extends Controller
         );
     }
 
-    public function createJob(Request $request)
+    public function createJob(CreateJobRequest $request)
     {
         $this->authorize('manageJobs', Admin::class);
 
-        $validated = $request->validate([
-            'company_id' => ['required', 'exists:companies,id'],
-            'user_id' => ['nullable', 'exists:users,id'],
-            'title' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'location' => ['nullable', 'string', 'max:255'],
-        ]);
+        $validated = $request->validated();
 
         $job = $this->admins->createJob($validated);
 
         return response()->json($job, 201);
     }
 
-    public function updateJob(Request $request, Job $job)
+    public function updateJob(UpdateJobRequest $request, Job $job)
     {
         $this->authorize('manageJobs', Admin::class);
 
-        $validated = $request->validate([
-            'company_id' => ['required', 'exists:companies,id'],
-            'user_id' => ['nullable', 'exists:users,id'],
-            'title' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'location' => ['nullable', 'string', 'max:255'],
-        ]);
+        $validated = $request->validated();
 
         $job = $this->admins->updateJob($job, $validated);
 
@@ -216,32 +191,22 @@ class AdminController extends Controller
         );
     }
 
-    public function createCompany(Request $request)
+    public function createCompany(CreateCompanyRequest $request)
     {
         $this->authorize('manageCompanies', Admin::class);
     
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'website' => ['nullable', 'url', 'max:255'],
-            'owner_id' => ['nullable', 'exists:users,id'],
-        ]);
+        $validated = $request->validated();
     
         $company = $this->admins->createCompany($validated);
     
         return response()->json($company, 201);
     }
 
-    public function updateCompany(Request $request, Company $company)
+    public function updateCompany(UpdateCompanyRequest $request, Company $company)
     {
         $this->authorize('manageCompanies', Admin::class);
 
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'website' => ['nullable', 'url', 'max:255'],
-            'owner_id' => ['nullable', 'exists:users,id'],
-        ]);
+        $validated = $request->validated();
 
         $ownerId = $validated['owner_id'] ?? null;
 

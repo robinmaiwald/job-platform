@@ -15,16 +15,16 @@ class Company extends Model
 
     public function users()
     {
-	return $this->belongsToMany(User::class);
+	    return $this->belongsToMany(User::class);
     }
 
     public function jobs()
     {
-	return $this->hasMany(Job::class);
+	    return $this->hasMany(Job::class);
     }
 
     public function owner()
     {
-	return $this->belongsTo(User::class, 'owner_id');
+	    return $this->belongsTo(User::class, 'owner_id');
     }
 }
