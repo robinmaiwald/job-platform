@@ -2,32 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Auth\UserLoginRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    public function login(UserLoginRequest $request)
     {
-	$validated = $request->validate([
-	    'email' => ['required', 'email'],
-	    'password' => [ 'required', 'string'],
-	]);
+        $validated = $request->validated();
 
-	$user = User::where('email', $validated['email'])->first();
+        $user = User::where('email', $validated['email'])->first();
 
-	if (! $user || ! Hash::check($validated['password'], $user->password)) {
-	    throw ValidationException::withMessages([
-		'email' => ['The provided data are incorrect.'],
-	    ]);
-	}
+        if (! $user || ! Hash::check($validated['password'], $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['The provided data are incorrect.'],
+            ]);
+        }
 
-	$token = $user->createToken('api-token')->plainTextToken;
+        $token = $user->createToken('api-token')->plainTextToken;
 
-	return response()->json([
-	    'token' => $token,
-	]);
+        return response()->json([
+            'token' => $token,
+        ]);
     }
 }
