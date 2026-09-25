@@ -12,6 +12,7 @@
 8. [Frontend](#8-frontend)
 9. [Project Structure](#9-project-structure)
 10. [Setup & Development](#10-setup--development)
+11. [Extras] (#11-extras)
 
 ---
 
@@ -377,6 +378,10 @@ Make sure the SQLite database file exists, then run the migrations and seed the 
 
     php artisan migrate --seed
 
+For Image/Logo storage run:
+
+    php artisan storage:link
+
 On Windows PowerShell, the SQLite file can be created with:
 
     New-Item database/database.sqlite -ItemType File
@@ -465,6 +470,19 @@ Example:
              }'
 
 The returned token can then be used for Admin endpoints.
+
+## 11. Extras
+This part is for later changes and notes.
+
+### Company Logo Uploads
+* Logos are optional when creating a company.
+* Uploaded images are validated as JPEG, PNG, JPG, or WebP with a 2 MB maximum size.
+* Files are stored using Laravel's public filesystem under `company-logos/`.
+* Only the file path is stored in the database.
+* Replacing a logo automatically removes the previous file.
+* Companies without a logo display a fallback placeholder.
+* Logo uploads are restricted by the existing company update authorization.
+
 
 ### Setup Verification
 
