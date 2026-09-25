@@ -8,8 +8,8 @@
 4. [Architecture](#4-architecture)
 5. [API](#5-api)
 6. [Authentication](#6-authentication)
-7. [Frontend](#7-frontend)
-8. [Database](#8-database)
+7. [Database](#7-database)
+8. [Frontend](#8-frontend)
 9. [Project Structure](#9-project-structure)
 10. [Setup & Development](#10-setup--development)
 
@@ -17,7 +17,7 @@
 
 ## 1. Overview
 
-This project is a full-stack job platform built with PHP/Laravel and Vue. It provides a REST API for managing users, companies, and jobs, together with a Vue/Inertia frontend for public users (guests), authenticated users (users), and administrators (admins).
+This project is a full-stack job platform built with PHP/Laravel and Vue. It provides a REST API for managing users, companies, and jobs, together with a Vue/Inertia.js frontend for public users (guests), authenticated users (users), and administrators (admins).
 
 The platform has three different access levels: **Guest**, **User**, and **Admin**, each with different permissions and functionality. These access rights are explained in more detail later in the documentation.
 
@@ -54,28 +54,28 @@ The project was developed based on the requirements described in the case study.
 
 ### Models
 
-#### User:
-- manage their profile
-- create and manage companies
-- create and manage jobs 
-- belongs to many companies
-- has many jobs
+#### User
+- Manage their profile
+- Create and manage companies
+- Create and manage jobs 
+- Belongs to many companies
+- Has many jobs
 
-#### Company:
-- can have an owner
-- have multiple users as members
-- have multiple jobs
-- can be created and managed by owner or administrators.
+#### Company
+- Can have an owner
+- Have multiple users as members
+- Have multiple jobs
+- Can be created and managed by owner or administrators.
 
 #### Job
-- belongs to a company;
-- has a creator;
-- contains a title, description, and location;
-- can be created and managed by creator or administrators.
+- Belongs to a company;
+- Has a creator;
+- Contains a title, description, and location;
+- Can be created and managed by creator or administrators.
 
 #### Admin
-- can view and manage their own profile
-- full CRUD access to User, Company, Job
+- Can view and manage their own profile
+- Full CRUD access to User, Company, Job
 
 ### Relationships
 
@@ -230,7 +230,7 @@ After successful authentication, the API returns a Sanctum personal access token
 
 ### Token Abilities
 
-User and Admin tokens use separate Sanctum abilities to keep the two authentication contexts separated.
+User and Admin tokens use separate Sanctum abilities to keep the two authentication contexts isolated.
 
 | Token | Ability | Access |
 |---|---|---|
@@ -261,9 +261,9 @@ The application uses a relational database managed through Laravel migrations an
 
 ### Factories & Seeders
 
-Laravel factories are used to generate test and development data for Users, Companies, and Jobs.
+Laravel factories are used to generate test and development data for users, companies, and jobs.
 
-The database seeders create a default development dataset, including an administrator and related Users, Companies, and Jobs. This provides a consistent starting point when setting up the project locally.
+The database seeders create a default development dataset, including an administrator and related users, companies, and jobs. This provides a consistent starting point when setting up the project locally.
 
 Factories can also be used independently in tests to create the required models and relationships for individual test cases.
 
@@ -288,7 +288,7 @@ resources/js/
 │   └── public/
 └── types/         # Shared TypeScript types
 ```
-The frontend provides separate interfaces for Guests, Users and Admins, following the same authorization boundaries as the backend.
+The frontend provides separate interfaces for Guests, Users, and Admins, following the same authorization boundaries as the backend.
 
 ## 9. Project Structure
 
@@ -397,9 +397,18 @@ The Laravel server handles the backend and API, while Vite handles the frontend 
 
 Once both servers are running, open the application in your browser:
 
-    http://localhost:8000
+http://localhost:8000
 
-### Testing
+### Test Credentials and Tests
+
+```
+Test User Mail: test@example.com
+Test User Password: password
+```
+```
+Test Admin Name: admin
+Test Admin Password: password
+```
 
 Run the complete test suite with:
 
@@ -457,5 +466,6 @@ Example:
 
 The returned token can then be used for Admin endpoints.
 
-#### Note
-Tested the setup on Linux and Mac successfully.
+### Setup Verification
+
+The project setup has been successfully tested from a fresh clone on both Linux and macOS.
