@@ -51,7 +51,7 @@ import { Head, Link } from '@inertiajs/vue3';
 
         <Link
             href="/admin/login"
-            class="fixed bottom-6 right-6 text-sm text-gray-500 transition hover:text-white"
+            class="fixed bottom-20 right-20 rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur transition hover:bg-white/20"
         >
             Admin
         </Link>

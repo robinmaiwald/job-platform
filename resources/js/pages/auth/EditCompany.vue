@@ -6,6 +6,7 @@ import AuthNav from '../../components/AuthNav.vue';
 const name = ref('');
 const description = ref('');
 const website = ref('');
+const logo = ref<File | null>(null);
 
 const companyId = ref('');
 const loading = ref(true);
@@ -67,18 +68,23 @@ async function updateCompany() {
     submitting.value = true;
 
     try {
+        const formData = new FormData();
+
+        formData.append('_method', 'PUT');
+        formData.append('name', name.value);
+        formData.append('description', description.value);
+        formData.append('website', website.value);
+
+        if (logo.value) {
+            formData.append('logo', logo.value);
+        }
         const response = await fetch(`/api/companies/${companyId.value}`, {
-            method: 'PUT',
+            method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
                 Accept: 'application/json',
                 Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({
-                name: name.value,
-                description: description.value || null,
-                website: website.value || null,
-            }),
+            body: formData,
         });
 
         const data = await response.json();
@@ -179,6 +185,19 @@ onMounted(async () => {
                             type="url"
                             class="mt-2 w-full rounded-lg border border-white/10 bg-black px-4 py-3 text-white outline-none focus:border-white/30"
                             placeholder="https://example.com"
+                        />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold">
+                            Company Logo
+                        </label>
+
+                        <input
+                            type="file"
+                            accept="image/jpeg,image/png,image/webp"
+                            class="mt-2 block w-full text-sm text-gray-400"
+                            @change="logo = ($event.target as HTMLInputElement).files?.[0] ?? null"
                         />
                     </div>
 

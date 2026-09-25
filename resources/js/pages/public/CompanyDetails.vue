@@ -83,9 +83,21 @@ onMounted(() => {
                         </div>
 
                         <div
-                            class="flex h-24 w-24 shrink-0 items-center justify-center rounded-lg border border-white/20 bg-black text-sm text-gray-500"
+                            class="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-white/20 bg-black"
                         >
-                            Logo
+                            <img
+                                v-if="company.logo"
+                                :src="`/storage/${company.logo}`"
+                                :alt="`${company.name} logo`"
+                                class="h-full w-full object-cover"
+                            />
+
+                            <span
+                                v-else
+                                class="text-sm text-gray-500"
+                            >
+                                Logo
+                            </span>
                         </div>
                     </div>
 

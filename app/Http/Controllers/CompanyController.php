@@ -7,6 +7,7 @@ use App\Http\Requests\Companies\UpdateCompanyRequest;
 use App\Http\Resources\CompanyResource;
 use App\Repositories\CompanyRepository;
 use App\Models\Company;
+use Illuminate\Support\Facades\Storage;
 
 class CompanyController extends Controller
 {
@@ -20,7 +21,7 @@ class CompanyController extends Controller
     public function index()
     {
         $this->authorize('viewAny', Company::class);
-        
+
         return CompanyResource::collection($this->companies->all());
     }
 
@@ -50,6 +51,16 @@ class CompanyController extends Controller
         $this->authorize('update', $company);
 
         $validated = $request->validated();
+
+        if ($request->hasFile('logo')) {
+            $oldLogo = $company->logo;
+
+            $validated['logo'] = $request->file('logo')->store('company-logos', 'public');
+
+            if ($oldLogo) {
+                Storage::disk('public')->delete($oldLogo);
+            }
+        }
 
         $company = $this->companies->update($company, $validated);
 
