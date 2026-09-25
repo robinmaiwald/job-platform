@@ -10,32 +10,32 @@ class JobRepository
 {
     public function all(): Collection
     {
-	return Job::all();
+        return Job::with('company')->get();
     }
 
     public function find(Job $job): Job
     {
-	return $job->load('company');
+        return $job->load('company');
     }
 
     public function create(array $data, User $user): Job
     {
-	$job = $user->jobs()->create($data);
+	    $job = $user->jobs()->create($data);
 
-	$job->company->users()->syncWithoutDetaching([$user->id]);
+	    $job->company->users()->syncWithoutDetaching([$user->id]);
 
-	return $job;
+	    return $job;
     }
 
     public function delete(Job $job): void
     {
-	$job->delete();
+	    $job->delete();
     }
 
     public function update(Job $job, array $data): Job
     {
-	$job->update($data);
+	    $job->update($data);
 
-	return $job;
+	    return $job;
     }
 }

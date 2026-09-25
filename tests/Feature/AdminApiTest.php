@@ -135,10 +135,14 @@ class AdminApiTest extends TestCase
 
     public function test_admin_update_job(): void
     {
-        $job = Job::factory()->create();
+        $user = User::factory()->create();
+        $job = Job::factory()->create([
+            'user_id' => $user->id,
+        ]);
 
         $this->adminCanUpdate("/api/admin/jobs/{$job->id}", [
             'company_id' => $job->company_id,
+            'user_id' => $job->user_id,
             'title' => 'Updated Job',
         ]);
     }

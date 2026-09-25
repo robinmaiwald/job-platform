@@ -82,7 +82,13 @@ class AdminRepository
     {
         $job->update($data);
 
-        return $job->refresh()->load('company', 'user');
+        $job->refresh()->load('company', 'user');
+
+        $job->company->users()->syncWithoutDetaching([
+            $job->user_id,
+        ]);
+
+        return $job;
     }
 
     public function deleteJob(Job $job): void

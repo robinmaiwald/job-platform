@@ -15,9 +15,9 @@ class UpdateJobRequest extends FormRequest
     {
 
         return [
-            'company_id' => ['required', 'exists:companies,id'],
-            'user_id' => ['required', 'exists:users,id'],
-            'title' => ['required', 'string', 'max:255'],
+            'company_id' => ['sometimes', 'exists:companies,id'],
+            'user_id' => ['sometimes', 'exists:users,id'],
+            'title' => ['sometimes', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'location' => ['nullable', 'string', 'max:255'],
         ];
