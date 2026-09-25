@@ -27,7 +27,7 @@ The frontend is built with Vue 3, Inertia, and Tailwind CSS and provides an inte
 
 ### Case Study
 
-The original case study for this project can be found [here](YOUR_CASE_STUDY_LINK).
+The original case study for this project can be found [here](TenMedia_CaseStudy.pdf).
 The project was developed based on the requirements described in the case study.
 
 ---
@@ -338,8 +338,8 @@ tests/
 
 Clone the repository and enter the project directory:
 
-    git clone <repository-url>
-    cd <project-directory>
+    git clone https://github.com/robinmaiwald/job-platform
+    cd job-platform
 
 Install the backend dependencies:
 
@@ -456,3 +456,6 @@ Example:
              }'
 
 The returned token can then be used for Admin endpoints.
+
+#### Note
+Tested the setup on Linux and Mac successfully.
