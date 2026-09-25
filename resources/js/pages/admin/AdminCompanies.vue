@@ -73,8 +73,12 @@ async function loadData() {
             throw new Error('Unable to load companies.')
         }
 
-        companies.value = await companiesResponse.json()
-        users.value = await usersResponse.json()
+        const companiesData = await companiesResponse.json()
+        const usersData = await usersResponse.json()
+
+        companies.value = companiesData.data
+        users.value = usersData.data
+
     } catch (err) {
         error.value = err instanceof Error
             ? err.message
@@ -146,7 +150,7 @@ async function createCompany() {
             return
         }
 
-        companies.value.push(data)
+        companies.value.push(data.data)
 
         closeCreateForm()
     } catch {
@@ -199,7 +203,7 @@ async function updateCompany() {
         )
 
         if (index !== -1) {
-            companies.value[index] = data
+            companies.value[index] = data.data
         }
 
         closeEditForm()

@@ -4,7 +4,6 @@ namespace App\Http\Requests\Jobs;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-
 class UpdateJobRequest extends FormRequest
 {
     public function authorize(): bool
@@ -15,8 +14,8 @@ class UpdateJobRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'company_id' => ['required', 'exists:companies,id'],
-            'title' => ['required', 'string', 'max:255'],
+            'company_id' => ['sometimes', 'exists:companies,id'],
+            'title' => ['sometimes', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'location' => ['nullable', 'string', 'max:255']
         ];

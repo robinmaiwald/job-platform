@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 #[Fillable(['name', 'description', 'website'])]
 class Company extends Model
 {
-    /** @use HasFactory<CompanyFactory> */
+
     use HasFactory;
 
     public function users()

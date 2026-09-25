@@ -25,11 +25,7 @@ class JobController extends Controller
         );
     }
 
-    public function create()
-    {
-        //
-    }
-
+    
     public function store(StoreJobRequest $request)
     {
         $this->authorize('create', Job::class);
@@ -48,10 +44,6 @@ class JobController extends Controller
 	    return new JobResource($this->jobs->find($job));
     }
 
-    public function edit(Job $job)
-    {
-        //
-    }
 
     public function update(UpdateJobRequest $request, Job $job)
     {

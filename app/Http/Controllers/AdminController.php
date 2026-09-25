@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Admin\AdminLoginRequest;
 use App\Http\Requests\Admin\CreateCompanyRequest;
 use App\Http\Requests\Admin\CreateJobRequest;
 use App\Http\Requests\Admin\CreateUserRequest;
@@ -19,7 +18,7 @@ use App\Models\Company;
 use App\Models\Job;
 use App\Models\User;
 use App\Repositories\AdminRepository;
-use Illuminate\Support\Facades\Hash;
+
 
 class AdminController extends Controller
 {

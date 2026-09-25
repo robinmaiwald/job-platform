@@ -34,7 +34,7 @@ const filteredUsers = computed(() => {
     const query = search.value.trim().toLowerCase()
 
     if (!query) {
-        return users.value
+        return users.value  
     }
 
     return users.value.filter(user =>
@@ -61,7 +61,9 @@ async function loadUsers() {
             throw new Error('Unable to load users.')
         }
 
-        users.value = await response.json()
+        const data = await response.json()
+        users.value = data.data
+
     } catch (err) {
         error.value = err instanceof Error
             ? err.message
@@ -126,7 +128,7 @@ async function createUser() {
             return
         }
 
-        users.value.push(data)
+        users.value.push(data.data)
 
         closeCreateForm()
     } catch {
@@ -182,7 +184,7 @@ async function updateUser() {
 
         if (index !== -1) {
             users.value[index] = {
-                ...data,
+                ...data.data,
                 companies: users.value[index].companies,
             }
         }

@@ -16,11 +16,6 @@ class UserController extends Controller
         //
     }
 
-    public function index()
-    {
-        //
-    }
-
     public function store(StoreUserRequest $request)
     {
         $this->authorize('create', User::class);

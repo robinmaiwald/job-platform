@@ -20,13 +20,4 @@ class JobFactory extends Factory
 	    'location' => fake()->city(),
         ];
     }
-
-    public function configure(): static
-    {
-        return $this->afterMaking(function (Job $job) {
-            if ($job->user_id === null) {
-                $job->user_id = User::factory()->create()->id;
-            }
-        });
-    }
 }

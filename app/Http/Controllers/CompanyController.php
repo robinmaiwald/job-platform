@@ -20,14 +20,8 @@ class CompanyController extends Controller
     public function index()
     {
         $this->authorize('viewAny', Company::class);
-
-	    return Companyresource::collection($this->companies->all());
-    }
-
-
-    public function create()
-    {
-        //
+        
+        return CompanyResource::collection($this->companies->all());
     }
 
 
@@ -48,12 +42,6 @@ class CompanyController extends Controller
         $this->authorize('view', $company);
 
 	    return new CompanyResource($this->companies->find($company));
-    }
-
-
-    public function edit(Company $company)
-    {
-        //
     }
 
 

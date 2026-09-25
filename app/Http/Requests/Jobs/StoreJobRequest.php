@@ -4,7 +4,6 @@ namespace App\Http\Requests\Jobs;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-
 class StoreJobRequest extends FormRequest
 {
     public function authorize(): bool

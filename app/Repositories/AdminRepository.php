@@ -12,11 +12,6 @@ class AdminRepository
 {
     // Admin profile
 
-    public function get(): Admin
-    {
-        return Admin::first();
-    }
-
     public function update(Admin $admin, array $data): Admin
     {
         $admin->update($data);
@@ -74,7 +69,13 @@ class AdminRepository
 
     public function createJob(array $data): Job
     {
-        return Job::create($data)->load('company', 'user');
+        $job = Job::create($data);
+    
+        $job->company->users()->syncWithoutDetaching([
+            $job->user_id,
+        ]);
+    
+        return $job->load('company', 'user');
     }
 
     public function updateJob(Job $job, array $data): Job
@@ -93,12 +94,12 @@ class AdminRepository
 
     public function companies(): Collection
     {
-        return Company::with('users', 'jobs')->get();
+        return Company::with('owner', 'users', 'jobs')->get();
     }
 
     public function company(Company $company): Company
     {
-        return $company->load('users', 'jobs');
+        return $company->load('owner', 'users', 'jobs');
     }
 
     public function createCompany(array $data): Company
@@ -116,7 +117,7 @@ class AdminRepository
             $company->users()->syncWithoutDetaching([$ownerId]);
         }
 
-        return $company->refresh()->load('users', 'jobs');
+        return $company->refresh()->load('owner', 'users', 'jobs');
     }
 
     public function updateCompany(
@@ -133,7 +134,7 @@ class AdminRepository
             $company->users()->syncWithoutDetaching([$ownerId]);
         }
 
-        return $company->refresh()->load('users', 'jobs');
+        return $company->refresh()->load('owner', 'users', 'jobs');
     }
 
     public function deleteCompany(Company $company): void

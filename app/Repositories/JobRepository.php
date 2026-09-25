@@ -15,7 +15,7 @@ class JobRepository
 
     public function find(Job $job): Job
     {
-	return $job;
+	return $job->load('company');
     }
 
     public function create(array $data, User $user): Job

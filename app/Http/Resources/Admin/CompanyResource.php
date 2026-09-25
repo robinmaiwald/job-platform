@@ -15,6 +15,14 @@ class CompanyResource extends JsonResource
             'description' => $this->description,
             'website' => $this->website,
             'owner_id' => $this->owner_id,
+            'owner' => $this->whenLoaded('owner', function () {
+                return [
+                    'id' => $this->owner->id,
+                    'name' => $this->owner->name,
+                    'email' => $this->owner->email,
+                ];
+            }),
+            
             'users' => $this->whenLoaded('users'),
             'jobs' => $this->whenLoaded('jobs'),
             'created_at' => $this->created_at,

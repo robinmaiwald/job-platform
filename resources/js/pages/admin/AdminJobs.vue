@@ -16,12 +16,12 @@ interface User {
 interface Job {
     id: number
     company_id: number
-    user_id: number | null
+    user_id: number 
     title: string
     description: string | null
     location: string | null
     company?: Company
-    user?: User | null
+    user?: User
 }
 
 const jobs = ref<Job[]>([])
@@ -87,9 +87,14 @@ async function loadData() {
             throw new Error('Unable to load jobs.')
         }
 
-        jobs.value = await jobsResponse.json()
-        companies.value = await companiesResponse.json()
-        users.value = await usersResponse.json()
+        const jobsData = await jobsResponse.json()
+        const companiesData = await companiesResponse.json()
+        const usersData = await usersResponse.json()
+
+        jobs.value = jobsData.data
+        companies.value = companiesData.data
+        users.value = usersData.data
+
     } catch (err) {
         error.value = err instanceof Error
             ? err.message
@@ -118,7 +123,7 @@ function openEditForm(job: Job) {
 
     title.value = job.title
     companyId.value = String(job.company_id)
-    userId.value = job.user_id ? String(job.user_id) : ''
+    userId.value = String(job.user_id)
     description.value = job.description ?? ''
     location.value = job.location ?? ''
 
@@ -147,9 +152,7 @@ async function createJob() {
             body: JSON.stringify({
                 title: title.value,
                 company_id: Number(companyId.value),
-                user_id: userId.value
-                    ? Number(userId.value)
-                    : null,
+                user_id: Number(userId.value),
                 description: description.value || null,
                 location: location.value || null,
             }),
@@ -162,7 +165,7 @@ async function createJob() {
             return
         }
 
-        jobs.value.push(data)
+        jobs.value.push(data.data)
 
         closeCreateForm()
     } catch {
@@ -195,9 +198,7 @@ async function updateJob() {
                 body: JSON.stringify({
                     title: title.value,
                     company_id: Number(companyId.value),
-                    user_id: userId.value
-                        ? Number(userId.value)
-                        : null,
+                    user_id: Number(userId.value),
                     description: description.value || null,
                     location: location.value || null,
                 }),
@@ -216,7 +217,7 @@ async function updateJob() {
         )
 
         if (index !== -1) {
-            jobs.value[index] = data
+            jobs.value[index] = data.data
         }
 
         closeEditForm()
@@ -418,10 +419,11 @@ onMounted(loadData)
                         <select
                             id="job-user"
                             v-model="userId"
+                            required
                             class="w-full border border-gray-700 bg-black px-4 py-3 text-white outline-none focus:border-white"
                         >
-                            <option value="">
-                                No user
+                            <option value=""disabled>
+                                Select user
                             </option>
 
                             <option
@@ -564,10 +566,11 @@ onMounted(loadData)
                         <select
                             id="edit-job-user"
                             v-model="userId"
+                            required
                             class="w-full border border-gray-700 bg-black px-4 py-3 text-white outline-none focus:border-white"
                         >
-                            <option value="">
-                                No user
+                            <option value="" disabled>
+                                Select user
                             </option>
 
                             <option

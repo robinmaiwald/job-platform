@@ -34,6 +34,14 @@ class User extends Authenticatable
      * @return array<string, string>
      */
 
+     protected function casts(): array
+     {
+         return [
+             'email_verified_at' => 'datetime',
+             'password' => 'hashed',
+         ];
+     }
+
     public function companies()
     {
         return $this->belongsToMany(Company::class);
@@ -42,13 +50,5 @@ class User extends Authenticatable
     public function jobs()
     {
         return $this->hasMany(Job::class);
-    }
-
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
     }
 }
