@@ -28,7 +28,7 @@ The frontend is built with Vue 3, Inertia, and Tailwind CSS and provides an inte
 
 ### Case Study
 
-The original case study for this project can be found [here](TenMedia_CaseStudy.pdf).
+
 The project was developed based on the requirements described in the case study.
 
 ---
