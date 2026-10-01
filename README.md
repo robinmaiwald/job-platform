@@ -12,7 +12,7 @@
 8. [Frontend](#8-frontend)
 9. [Project Structure](#9-project-structure)
 10. [Setup & Development](#10-setup--development)
-11. [Extras] (#11-extras)
+
 
 ---
 
